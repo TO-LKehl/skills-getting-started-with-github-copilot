@@ -26,7 +26,9 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="participants-section">
             <strong>Participants:</strong>
             <ul class="participants-list">
-              ${details.participants.map(email => `<li>${email}</li>`).join("")}
+              ${details.participants.map(email => `<li class="participant-item" data-activity="${encodeURIComponent(name)}" data-email="${encodeURIComponent(email)}">${email}<button class="remove-btn" title="Unregister" aria-label="Unregister">` +
+                `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 6h18v2H3V6zm2 3h14l-1 11a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 9zm5-6h4v2h-4V3z"/></svg>` +
+              `</button></li>`).join("")}
             </ul>
           </div>
         `;
@@ -92,6 +94,40 @@ document.addEventListener("DOMContentLoaded", () => {
       messageDiv.className = "message error";
       messageDiv.classList.remove("hidden");
       console.error("Error signing up:", error);
+    }
+  });
+
+  // Delegate click for participant remove buttons
+  activitiesList.addEventListener("click", async (e) => {
+    const btn = e.target.closest('.remove-btn');
+    if (!btn) return;
+
+    const li = btn.closest('.participant-item');
+    if (!li) return;
+
+    const activity = decodeURIComponent(li.dataset.activity || '');
+    const email = decodeURIComponent(li.dataset.email || '');
+
+    try {
+      const resp = await fetch(`/activities/${encodeURIComponent(activity)}/unregister?email=${encodeURIComponent(email)}`, { method: 'POST' });
+      const result = await resp.json();
+      if (resp.ok) {
+        // remove from DOM
+        li.remove();
+        messageDiv.textContent = result.message;
+        messageDiv.className = 'message success';
+        messageDiv.classList.remove('hidden');
+        setTimeout(() => messageDiv.classList.add('hidden'), 5000);
+      } else {
+        messageDiv.textContent = result.detail || 'Could not unregister participant';
+        messageDiv.className = 'message error';
+        messageDiv.classList.remove('hidden');
+      }
+    } catch (err) {
+      console.error('Unregister error', err);
+      messageDiv.textContent = 'Failed to unregister. Please try again.';
+      messageDiv.className = 'message error';
+      messageDiv.classList.remove('hidden');
     }
   });
 
