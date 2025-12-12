@@ -74,6 +74,68 @@ section h3 {
   margin-bottom: 8px;
 }
 
+/* Participants section styling */
+.participants-section {
+  margin-top: 10px;
+}
+
+/* Align participant list left with traditional bullets */
+.participants-list {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 6px;
+  text-align: left;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px; /* Abstand zwischen Chips */
+}
+
+.participants-list li {
+  display: inline-block;
+  background: #e8f1ff;
+  color: #0b3d91;
+  margin: 0;
+  padding: 6px 10px;
+  border-radius: 999px; /* chip‑Look */
+  font-size: 14px;
+}
+
+/* Participant chip with remove button */
+.participant-item {
+  display: inline-flex;
+  align-items: center;
+  background: #e8f1ff;
+  color: #0b3d91;
+  margin: 0;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 14px;
+}
+
+.remove-btn {
+  background: transparent; /* kein roter Kreis */
+  color: #c62828; /* Icon-Farbe */
+  border: none;
+  padding: 0 4px;
+  margin-left: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.remove-btn svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+  fill: currentColor;
+}
+
+.remove-btn:hover {
+  background-color: rgba(0,0,0,0.05);
+  border-radius: 4px;
+}
+
 .form-group {
   margin-bottom: 15px;
 }
